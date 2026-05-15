@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+
+int n, k;
+int x[100];
+
+void show(int x[]) {
+    for (int j = 1; j <= k; j++) {
+        cout << x[j] << " ";
+    }
+    cout << endl;
+}
+
+void Try(int t) {
+    for (int i = x[t - 1] + 1; i <= n; i++) {
+            x[t] = i;
+            if (t == k) {
+                show(x);
+            }
+            else {
+                Try(t + 1);
+            }
+    }
+}
+
+int main()
+{
+    cout << "Nhap n = ";
+    cin >> n;
+    cout << "Nhap k = ";
+    cin >> k;
+    while (k > n) {
+        cout << "Nhap lai! k phai <= n.";
+        cin >> k;
+    };
+    x[0] = 0;
+    cout << "Cac tap con k cua tap n là: ";
+    cout << endl;
+    Try(1);
+}
