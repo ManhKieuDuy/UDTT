@@ -1,0 +1,37 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+
+vector<int> a = {3, 7, 2, 8, 4, 10, 30, 13, 5, 18, 20, 6, 22};
+int n = a.size();
+int k = 6;
+
+int viTriK(vector<int> a, int left, int right, int k){
+    if(left > right) return -1;
+
+    if(left == right) {
+        return (a[left] == k) ? left : -1;
+    }
+
+    int mid = left + (right - left) / 2;
+
+    if(a[mid] == k) return mid;
+
+    int resultLeft = viTriK(a, left, mid - 1, k);
+    if(resultLeft != -1) return resultLeft;
+
+    return viTriK(a, mid + 1, right, k);
+
+}
+
+int main()
+{
+    int vitriKXuatHien = viTriK(a, 0, n - 1, k);
+    cout << "Vi tri k xuat hien la index: " << vitriKXuatHien << endl;
+    return 0;
+}
