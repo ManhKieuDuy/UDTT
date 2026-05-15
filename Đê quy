@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// Cấu trúc để lưu trữ đồng thời Tổng và Số lượng
+struct KetQua {
+    float tong;
+    int soLuong;
+};
+
+/**
+ * Thuật toán A: Tính tổng và số lượng các số nhỏ hơn k bằng đệ quy
+ * @param a: mảng số thực
+ * @param n: kích thước mảng hoặc chỉ số phần tử hiện tại
+ * @param k: số thực để so sánh
+ */
+KetQua thuatToanA(const vector<float>& a, int n, float k) {
+    // Trường hợp cơ sở: Khi đã xét hết mảng
+    if (n == 0) {
+        return {0, 0};
+    }
+
+    // Đệ quy: Lấy kết quả từ các phần tử trước đó
+    KetQua kqTruoc = thuatToanA(a, n - 1, k);
+
+    // Kiểm tra phần tử hiện tại (a[n-1])
+    if (a[n - 1] < k) {
+        kqTruoc.tong += a[n - 1];
+        kqTruoc.soLuong += 1;
+    }
+
+    return kqTruoc;
+}
+
+int main() {
+    // 1. Khởi tạo mảng ít nhất 12 số thực và số k
+    vector<float> a = {1.5, 12.0, 5.5, 8.2, 3.0, 10.1, 2.4, 7.8, 4.6, 9.0, 11.2, 0.5};
+    float k = 6.0;
+
+    cout << "Mang a: ";
+    for (float x : a) cout << x << "  ";
+    cout << "\nSo k = " << k << endl;
+
+    // 2. Ứng dụng thuật toán A
+    KetQua finalKq = thuatToanA(a, a.size(), k);
+
+    // 3. Hiển thị kết quả và tính trung bình cộng
+    if (finalKq.soLuong > 0) {
+        float trungBinhCong = finalKq.tong / finalKq.soLuong;
+        cout << "\nKet qua:" << endl;
+        cout << "- Co " << finalKq.soLuong << " so nho hon " << k << endl;
+        cout << "- Tong cua chung la: " << finalKq.tong << endl;
+        cout << "- Trung binh cong la: " << trungBinhCong << endl;
+    } else {
+        cout << "\nKhong co so nao trong mang nho hon " << k << endl;
+    }
+
+    return 0;
+}
