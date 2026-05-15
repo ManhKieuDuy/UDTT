@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+int n = 4;
+int a[100], dd[100];
+
+void show(int a[]) {
+	for (int i = 1; i <= n; i++) {
+		switch (a[i]) {
+		case 1:
+			cout << "tung\t";
+			break;
+		case 2:
+			cout << "cuc\t";
+			break;
+		case 3:
+			cout << "truc\t";
+			break;
+		case 4:
+			cout << "mai\t";
+			break;
+		}
+	}
+	cout << endl;
+}
+
+void Try(int k) {
+	for (int i = 1; i <= n; i++) {
+		if (dd[i] == 0) {
+			a[k] = i;
+			if (k == n) {
+				show(a);
+			}
+			else {
+				dd[i] = 1;
+				Try(k + 1);
+				dd[i] = 0;
+			}
+		}
+	}
+}
+
+int main()
+{
+	cout << "Cach xep 4 nguoi vao 4 ghe: " << endl;
+	cout << "A\t" << "B\t" << "C\t" << "D\t" << endl;
+	Try(1);
+}
