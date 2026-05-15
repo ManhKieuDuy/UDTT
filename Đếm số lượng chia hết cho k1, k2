@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+vector<int> a = {2, 4, 6, 8, 9, 10, 3, 15, 36, 44, 37, 45, 22, 19};
+int k1 = 3, k2 = 4;
+vector<int> kqK1;
+vector<int> kqK2;
+
+int A(vector<int>& a, int left, int right, int k, bool demKhongChiaHet = false){
+    if(left > right) return -1;
+
+    if(left == right ) {
+        if(!demKhongChiaHet) return (a[left] % k == 0) ? 1 : 0;
+        else return (a[left] % k != 0) ? 1 : 0;
+        }
+    int mid = left + (right - left) / 2;
+
+    return A(a, left, mid, k, demKhongChiaHet) + A(a, mid + 1, right, k, demKhongChiaHet);
+
+}
+
+
+int main()
+{
+    cout << "Danh sach a: " << endl;
+    for(int i = 0; i < a.size(); i++){
+        cout << a[i] << " ";
+    }
+    cout << endl;
+    int soLuongChiaHetK1 = A(a, 0, a.size() - 1, k1);
+    cout << "So luong so trong ds a chia het cho k1 = " << k1 << " la: " << soLuongChiaHetK1 << endl;
+    int soLuongChiaHetK2 = A(a, 0, a.size() - 1, k2, true);
+    cout << "So luong so trong ds a chia het cho k2 = " << k2 << " la: " << soLuongChiaHetK2 << endl;
+
+    return 0;
+}
