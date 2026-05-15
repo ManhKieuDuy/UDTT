@@ -1,0 +1,125 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+struct ChuyenXe{
+    string tenNhaXe;
+    int soHanhKhach;
+    float tienVe;
+};
+
+vector<ChuyenXe> d{
+    {"Bac Ninh", 28, 4000000},
+    {"Hai Phong", 40, 3700000},
+    {"Phu Tho", 36, 3200000},
+    {"Ha Noi", 30, 3000000},
+    {"Ninh Binh", 25, 2600000},
+    {"Cao Bang", 29, 2100000},
+    {"HCM", 35, 2000000},
+    {"Ha Nam", 20, 1000000},
+};
+int m = 10000000;
+int F[100][100];
+int v = 100;
+int n = d.size();
+
+void mySort(vector<ChuyenXe>& d) {
+    for (int i = 0; i < d.size() - 1; i++) {
+        for (int j = i + 1; j < d.size(); j++) {
+            if (d[i].tienVe < d[j].tienVe) {
+                swap(d[i], d[j]);
+            }
+        }
+    }
+}
+
+void Greedy(vector<ChuyenXe>& d, vector<ChuyenXe>& G, int m){
+    G.clear();
+    float tongTienVeHienTai = 0;
+    mySort(d);
+    for(int i = 0; i < d.size(); i++){
+        G.push_back(d[i]);
+        tongTienVeHienTai += d[i].tienVe;
+        if(tongTienVeHienTai > m){
+            break;
+        }
+    }
+}
+
+void algorithm(){
+    for(int j = 0; j <= v; j++){
+        F[0][j] = 0;
+    }
+    for(int i = 1; i <= n; i++){
+        for(int j = 0; j <= v; j++){
+            int soKhach_i = d[i - 1].soHanhKhach;
+            float tienVe_i = d[i - 1].tienVe;
+
+            F[i][j] = F[i - 1][j];
+
+            if(soKhach_i <= j){
+                int temp = F[i - 1][j - soKhach_i] + tienVe_i;
+                if(F[i][j] < temp){
+                    F[i][j] = temp;
+                }
+            }
+        }
+    }
+}
+
+void result(){
+    cout << "Tong tien ve lon nhat t = " << F[n][v] << endl;
+    cout << "Danh sach xe duoc dua vao nha cho k: " << endl;
+    int count = 0;
+    int i = n;
+    int j = v;
+    while(i != 0){
+        if(F[i][j] != F[i - 1][j]){
+            count++;
+            cout << "+ " << d[i - 1].tenNhaXe << ": " << (long)d[i - 1].tienVe << " VND" << endl;
+            j = j - d[i - 1].soHanhKhach;
+        }i--;
+    }
+    cout << "So xe q khong vuot qua suc chua v, q = " << count << endl;
+}
+
+void printTable(){
+    cout << "\nBang phuong an:" << endl;
+    cout << "i\\j |";
+    for(int j = 0; j <= v; j++){
+        cout << setw(5) << j;
+    }
+    cout << endl << string(60, '-') << endl;
+
+    for(int i = 0; i <= n; i++){
+        cout << setw(3) << i << " | ";
+        for(int j = 0; j <= v; j++){
+            cout << setw(5) << F[i][j];
+        }
+        cout << endl;
+    }
+    cout << string(60, '-') << endl;
+}
+
+int main()
+{
+    cout << "THAM LAM" << endl;
+    vector<ChuyenXe> G;
+    Greedy(d, G, m);
+    int p = 0;
+    for(int i = 0; i < G.size(); i++){
+        p += G[i].tienVe;
+    }
+
+    cout << "\nQUY HOACH DONG" << endl;
+    cout << "So chuyen xe it nhat can su dung u = " << G.size() << " chuyen xe." << endl;
+    cout << "Sao cho tong tien ve p lon hon m, p = " << p << " VND." << endl;
+
+    algorithm();
+    result();
+    printTable();
+    return 0;
+}
